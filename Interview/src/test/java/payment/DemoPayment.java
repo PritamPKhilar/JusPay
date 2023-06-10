@@ -30,9 +30,9 @@ public class DemoPayment {
 		property.load(fis);
 		//Get the Url from Property file
 		String url = property.getProperty("url");
-		//Get the upiid from Property file
+		//Get the upi id from Property file
 		String upiid = property.getProperty("upiid");
-		//Setup the chromedriver
+		//Setup the chrome driver
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
 		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
