@@ -14,13 +14,15 @@ import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class DemoPayment {
 	
 	public static WebDriver driver;
-	public static void main(String[] args) throws IOException, InterruptedException {
+	@Test
+	public void paymentTest() throws IOException, InterruptedException {
 		//For Providing dynamic file name for screenshot.
 		Date date = new Date();
 		String filename = date.toString().replace(" ", "_").replace(":", "_");
@@ -32,6 +34,11 @@ public class DemoPayment {
 		String url = property.getProperty("url");
 		//Get the upi id from Property file
 		String upiid = property.getProperty("upiid");
+		
+		String cardnumber = property.getProperty("cnumber");
+		String cdate = property.getProperty("date");
+		String name = property.getProperty("name");
+		String cv = property.getProperty("cv");
 		//Setup the chrome driver
 		WebDriverManager.chromedriver().setup();
 		driver = new ChromeDriver();
@@ -42,12 +49,21 @@ public class DemoPayment {
 		//For scrolling to the desired web element
 		JavascriptExecutor js = (JavascriptExecutor) driver;
 		js.executeScript("window.scrollBy(0,500)");
-		//Finding the elements
+		//Finding the elements for upi
 		driver.findElement(By.id("pay_via_hosted")).click();
-		driver.findElement(By.xpath("//ul/div[3]")).click();
-		driver.findElement(By.xpath("//span[@class='upi-label']")).click();
-		driver.findElement(By.xpath("//input[@placeholder='Enter your UPI ID']")).sendKeys(upiid);
+//		driver.findElement(By.xpath("//ul/div[3]")).click();
+//		driver.findElement(By.xpath("//span[@class='upi-label']")).click();
+//		driver.findElement(By.xpath("//input[@placeholder='Enter your UPI ID']")).sendKeys(upiid);
+//		driver.findElement(By.xpath("//button[@class='pay-btn']")).click();
+		
+		//Finding elements for card payment
+		driver.findElement(By.xpath("//ul/div[1]")).click();
+		driver.findElement(By.xpath("//input[@placeholder='Card Number']")).sendKeys(cardnumber);
+		driver.findElement(By.xpath("//input[@placeholder='MM/YY']")).sendKeys(cdate);
+		driver.findElement(By.xpath("//input[@placeholder='Card Holder Name']")).sendKeys(name);
+		driver.findElement(By.xpath("//input[@placeholder='CVV']")).sendKeys(cv);
 		driver.findElement(By.xpath("//button[@class='pay-btn']")).click();
+		
 		Thread.sleep(2000);
 		//For Taking the screenshot
 		TakesScreenshot ts = (TakesScreenshot) driver;
